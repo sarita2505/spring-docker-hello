@@ -8,7 +8,8 @@ RUN cd /tmp && tar xvfz tomcat.tar.gz
 
 RUN cp -Rv /tmp/apache-tomcat-8.5.54/* /usr/local/tomcat/
 
-EXPOSE 8080
+ENV JAVA_OPTS="-agentlib:jdwp=transport=dt_socket,address=8888,server=y,suspend=n"
+EXPOSE 8080 8888
 
 ADD target/*.war /usr/local/tomcat/webapps/app.war
 
