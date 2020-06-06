@@ -1,16 +1,7 @@
-FROM openjdk:8
+FROM rkp201/jdk-tomcat:1.2
 
-RUN mkdir /usr/local/tomcat
-
-RUN wget http://www-us.apache.org/dist/tomcat/tomcat-8/v8.5.54/bin/apache-tomcat-8.5.54.tar.gz -O /tmp/tomcat.tar.gz
-
-RUN cd /tmp && tar xvfz tomcat.tar.gz
-
-RUN cp -Rv /tmp/apache-tomcat-8.5.54/* /usr/local/tomcat/
-
-ENV JAVA_OPTS="-agentlib:jdwp=transport=dt_socket,address=8888,server=y,suspend=n"
-EXPOSE 8080 8888
-
+#add your target war as app.war present in /usr/local/tomcat/webapps/
 ADD target/*.war /usr/local/tomcat/webapps/app.war
 
+#catalina cmd to run the war
 CMD /usr/local/tomcat/bin/catalina.sh run
