@@ -1,0 +1,31 @@
+version: "3.7"
+services:
+  database-service:
+    container_name: mysqldb
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    networks:
+      - spring-boot-mysql-network
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+#      - MYSQL_DATABASE=test_db
+    volumes:
+      - my-datavolume:/var/lib/mysql
+  webapp-service:
+    container_name: spring
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      - spring-boot-mysql-network
+    depends_on:
+      - database-service
+networks:
+  spring-boot-mysql-network:
+    driver: bridge
+volumes:
+  my-datavolume:
